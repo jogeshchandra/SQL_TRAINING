@@ -1,0 +1,110 @@
+drop table factorial;
+
+create table factorial(n1 int,fact_n int);
+
+insert into factorial values(1,1);
+insert into factorial values(2,2);
+insert into factorial values(5,120);
+insert into factorial values(6,720);
+select * from factorial;
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    5 |    120 |
+|    6 |    720 |
++------+--------+
+
+drop procedure if exists fact;
+delimiter /
+CREATE PROCEDURE fact(IN n int)
+     BEGIN
+     DECLARE res int;
+     DECLARE i int;
+     SET i = n;
+     set res = 1;
+     while i > 0 do
+     SET res = res * i;
+     SET i = i - 1;
+     END while;
+     insert into factorial values (n,res);
+     IF n<5 THEN
+     select * from factorial where n1 < 5;
+     ELSEIF n=5 THEN
+     delete from factorial where n1 = 5;
+     select * from factorial;
+     ELSEIF n>5 THEN
+     update factorial set fact_n=null where n1 > 5;
+     select * from factorial;
+     END IF;
+     end/
+     delimiter ;
+
+ call fact(3);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    3 |      6 |
++------+--------+
+
+call fact(4);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    3 |      6 |
+|    4 |     24 |
++------+--------+
+ call fact(5);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    6 |    720 |
+|    3 |      6 |
+|    4 |     24 |
++------+--------+
+
+call fact(6);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    6 |   NULL |
+|    3 |      6 |
+|    4 |     24 |
+|    6 |   NULL |
++------+--------++
+
+call fact(7);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    6 |   NULL |
+|    3 |      6 |
+|    4 |     24 |
+|    6 |   NULL |
+|    7 |   NULL |
++------+--------+
+
+call fact(8);
++------+--------+
+| n1   | fact_n |
++------+--------+
+|    1 |      1 |
+|    2 |      2 |
+|    6 |   NULL |
+|    3 |      6 |
+|    4 |     24 |
+|    6 |   NULL |
+|    7 |   NULL |
+|    8 |   NULL |
++------+--------+
