@@ -1,0 +1,213 @@
+case when
+rank
+row number
+partition by 
+group by aggregate
+
+
+
+mysql> select * from student;
++------+------------+-------+--------+
+| id   | Name       | Marks | Result |
++------+------------+-------+--------+
+|    1 | jogesh     |    89 | Pass   |
+|    2 | ram        |    75 | Pass   |
+|    3 | gopal      |    33 | Fail   |
+|    4 | Aman       |    32 | Fail   |
+|    5 | Tushar     |    91 | Pass   |
+|    6 | Abhisek    |    52 | Fail   |
+|    7 | Rohit      |    78 | Pass   |
+|    8 | pavankumar |    23 | Fail   |
+|    9 | subham     |    95 | Pass   |
+|   10 | Elsa       |    99 | Pass   |
+|   11 | Prativa    |    97 | Pass   |
+|   12 | Sriram     |    14 | Fail   |
+|   13 | Ritvik     |    74 | Pass   |
+|   14 | Omm        |    93 | Pass   |
++------+------------+-------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select name,case
+    -> when marks>=90 then 'A'
+    -> when marks>=80 and marks<90 then 'B'
+    -> when marks>=60 and marks<80 then 'C'
+    -> else 'D'
+    -> end AS Student_grade
+    -> from student;
++------------+---------------+
+| name       | Student_grade |
++------------+---------------+
+| jogesh     | B             |
+| ram        | C             |
+| gopal      | D             |
+| Aman       | D             |
+| Tushar     | A             |
+| Abhisek    | D             |
+| Rohit      | C             |
+| pavankumar | D             |
+| subham     | A             |
+| Elsa       | A             |
+| Prativa    | A             |
+| Sriram     | D             |
+| Ritvik     | C             |
+| Omm        | A             |
++------------+---------------+
+14 rows in set (0.00 sec)
+
+-> aggregate fun perform on the entire table and return a single row
+->where as window function act on every row and return a single value for each row ie the each row retains its distinct identity.
+
+
+
+WINDOW Funtion
+
+mysql> select * from product_sales;
++----------------+------+-----------+------------+----------+
+| Emp_Name       | Year | Country   | Prod_name  | Sales    |
++----------------+------+-----------+------------+----------+
+| Mary Greenspan | 2017 | Australia | Computer   | 15000.00 |
+| Mary Greenspan | 2018 | Australia | Computer   | 10000.00 |
+| Mary Greenspan | 2019 | Australia | TV         | 20000.00 |
+| Mike Johnson   | 2017 | Britain   | Laptop     | 10000.00 |
+| Mike Johnson   | 2018 | Britain   | Laptop     | 15000.00 |
+| Mike Johnson   | 2019 | Britain   | TV         | 20000.00 |
+| Nancy Jackson  | 2017 | Canada    | Mobile     | 20000.00 |
+| Nancy Jackson  | 2018 | Canada    | Calculator |  1500.00 |
+| Nancy Jackson  | 2019 | Canada    | Mobile     | 25000.00 |
++----------------+------+-----------+------------+----------+
+9 rows in set (0.00 sec)
+
+Aggregate Window Function
+mysql> select country,avg(sales) from product_sales group by country;
++-----------+--------------+
+| country   | avg(sales)   |
++-----------+--------------+
+| Australia | 15000.000000 |
+| Britain   | 15000.000000 |
+| Canada    | 15500.000000 |
++-----------+--------------+
+3 rows in set (0.00 sec)
+
+Ranking Window Function
+mysql> select country, avg(sales) over (partition by country ) as Window_avg from product_sales;
++-----------+--------------+
+| country   | Window_avg   |
++-----------+--------------+
+| Australia | 15000.000000 |
+| Australia | 15000.000000 |
+| Australia | 15000.000000 |
+| Britain   | 15000.000000 |
+| Britain   | 15000.000000 |
+| Britain   | 15000.000000 |
+| Canada    | 15500.000000 |
+| Canada    | 15500.000000 |
+| Canada    | 15500.000000 |
++-----------+--------------+
+9 rows in set (0.00 sec)
+
+
+------ Rank() ------
+
+mysql> select * from student_rank;
++---------+-------+
+| name    | marks |
++---------+-------+
+| jogesh  |    99 |
+| jogesh  |    99 |
+| Atul    |    90 |
+| Tushar  |    95 |
+| Abhisek |    90 |
+| Rohit   |    90 |
+| Prativa |    85 |
+| Elsa    |    80 |
+| Aman    |    75 |
+| pavan   |    56 |
+| Ritvik  |    76 |
++---------+-------+
+11 rows in set (0.00 sec)
+
+mysql> select name,marks,rank() over (order by marks desc) as Rank_ , dense_rank() over (order by marks desc) as dense_rank_ from student_rank;
++---------+-------+-------+-------------+
+| name    | marks | Rank_ | dense_rank_ |
++---------+-------+-------+-------------+
+| jogesh  |    99 |     1 |           1 |
+| jogesh  |    99 |     1 |           1 |
+| Tushar  |    95 |     3 |           2 |
+| Atul    |    90 |     4 |           3 |
+| Abhisek |    90 |     4 |           3 |
+| Rohit   |    90 |     4 |           3 |
+| Prativa |    85 |     7 |           4 |
+| Elsa    |    80 |     8 |           5 |
+| Ritvik  |    76 |     9 |           6 |
+| Aman    |    75 |    10 |           7 |
+| pavan   |    56 |    11 |           8 |
++---------+-------+-------+-------------+
+11 rows in set (0.00 sec)
+
+---- Row_number()-----
+It is used to assign a unique sequential number to each record within the partition.
+
+mysql> select * from student_rank;
++---------+-------+
+| name    | marks |
++---------+-------+
+| jogesh  |    99 |
+| jogesh  |    99 |
+| Atul    |    90 |
+| Tushar  |    95 |
+| Abhisek |    90 |
+| Rohit   |    90 |
+| Prativa |    85 |
+| Elsa    |    80 |
+| Aman    |    75 |
+| pavan   |    56 |
+| Ritvik  |    76 |
++---------+-------+
+11 rows in set (0.00 sec)
+
+mysql> select name,marks,row_number() over(order by marks desc) as rn from student_rank;
++---------+-------+----+
+| name    | marks | rn |
++---------+-------+----+
+| jogesh  |    99 |  1 |
+| jogesh  |    99 |  2 |
+| Tushar  |    95 |  3 |
+| Atul    |    90 |  4 |
+| Abhisek |    90 |  5 |
+| Rohit   |    90 |  6 |
+| Prativa |    85 |  7 |
+| Elsa    |    80 |  8 |
+| Ritvik  |    76 |  9 |
+| Aman    |    75 | 10 |
+| pavan   |    56 | 11 |
++---------+-------+----+
+11 rows in set (0.00 sec)
+
+
+mysql>
+
+mysql> select name,row_number() over (partition by name) as rn from student_rank;
++---------+----+
+| name    | rn |
++---------+----+
+| Abhisek |  1 |
+| Aman    |  1 |
+| Atul    |  1 |
+| Elsa    |  1 |
+| jogesh  |  1 |
+| jogesh  |  2 |
+| pavan   |  1 |
+| Prativa |  1 |
+| Ritvik  |  1 |
+| Rohit   |  1 |
+| Tushar  |  1 |
++---------+----+
+11 rows in set (0.00 sec)
+
+mysql> select name from (select *,row_number() over (partition by name) as rn from student_rank) x where x.rn <>1;
++--------+
+| name   |
++--------+
+| jogesh |
++--------+
+1 row in set (0.00 sec)f
