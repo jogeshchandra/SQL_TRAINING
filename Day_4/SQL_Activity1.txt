@@ -53,6 +53,32 @@ mysql> select salary from employeeposition order by salary desc limit 3,1;
 +--------+
 1 row in set (0.00 sec)
 
+==========[[[ or ]]]==========
+
+by dense_rank()
+
+mysql> select salary,dense_rank() over (order by salary desc) rn from employeeposition;
++--------+----+
+| salary | rn |
++--------+----+
+| 500000 |  1 |
+| 300000 |  2 |
+|  90000 |  3 |
+|  85000 |  4 |
+|  75000 |  5 |
++--------+----+
+5 rows in set (0.00 sec)
+
+mysql> select * from (select *,dense_rank() over ( order by salary desc ) rn from employeeposition ) x where x.rn =4;
++----------+-------------+---------------+--------+----+
+| ï»¿EmpID | EmpPosition | DateOfJoining | Salary | rn |
++----------+-------------+---------------+--------+----+
+|        2 | Lead        | 02-05-2022    |  85000 |  4 |
++----------+-------------+---------------+--------+----+
+1 row in set (0.04 sec)
+
+
+
 2)	Write a query to fetch only the place name(string before brackets) from the Address column of EmployeeInfo table.
 
 mysql> SELECT SUBSTR(Address, 1, locate('(',Address)-1) FROM EmployeeInfo;
