@@ -211,3 +211,19 @@ mysql> select name from (select *,row_number() over (partition by name) as rn fr
 | jogesh |
 +--------+
 1 row in set (0.00 sec)f
+
+Difference Between Row_nunmer() and Dense_Rank()
+
++--------+----+----+
+| salary | dn | rn |
++--------+----+----+
+|  11000 |  1 |  1 |
+|  10000 |  2 |  2 |
+|   8000 |  3 |  3 |
+|   8000 |  3 |  4 |
+|   8000 |  3 |  5 |
+|   8000 |  3 |  6 |
+|   7000 |  4 |  7 |
+|   7000 |  4 |  8 |
++--------+----+----+
+8 rows in set (0.00 sec)

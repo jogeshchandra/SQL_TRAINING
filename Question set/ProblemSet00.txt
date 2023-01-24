@@ -1,0 +1,39 @@
+1)Select the Employee with the top three salaries
+
+2)Select the Employee with the least salary
+
+3)Select the Employee who does not have a manager in the department table
+
+4)Select the Employee who is also a Manager
+
+5)Select the Empolyee who is a Manager and has least salary
+
+6)Select the total number of Employees in Communications departments
+
+7)Select the Employee in Finance Department who has the top salary
+
+8)Select the Employee in product depatment who has the least salary
+
+9)Select the count of Empolyees in Health with maximum salary
+
+10)Select the Employees who report to Natasha Stevens
+
+11)Display the Employee name,Employee count,Dep name,Dept manager in the Health department
+
+12)Display the Department id,Employee ids and Manager ids for the Communications department
+
+13)Select the Average Expenses for Each dept with Dept id and Dept name
+
+14)Select the total expense for the department finance
+
+15)Select the department which spends the least with Dept id and Dept manager name
+
+16)Select the count of Employees in each department
+
+17)Select the count of Employees in each department having salary <10000
+
+18)Select the total number of Employees in Dept id D04
+
+19)Select all department details of the Department with Maximum Employees
+
+20)Select the Employees who has Tim Cook as their manager
